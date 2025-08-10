@@ -16,3 +16,4 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 import '../e2e/tests/TestBase'
+import "allure-cypress";

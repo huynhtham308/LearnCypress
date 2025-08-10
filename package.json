@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "allure-cypress": "^3.3.3",
     "cypress": "^14.5.4"
   },
   "scripts": {
