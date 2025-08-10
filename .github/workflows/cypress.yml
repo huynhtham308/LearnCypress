@@ -6,10 +6,9 @@ jobs:
     # Runs tests in parallel with matrix strategy https://docs.cypress.io/guides/guides/parallelization
     # https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
     # Also see warning here https://github.com/cypress-io/github-action#parallel
-    strategy:
-      fail-fast: false # https://github.com/cypress-io/github-action/issues/48
-      matrix:
-        containers: [1, 2] # Uses 2 parallel instances
+    # strategy:
+    #   fail-fast: true # https://github.com/cypress-io/github-action/issues/48
+      # matrix: containers: [1, 2] # Uses 2 parallel instances
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,8 +49,9 @@ jobs:
         with:
           name: allure-report-${{ matrix.containers }}
           path: allure-report
-          
+
       - name: Publish Allure Report
-        uses: mikepenz/action-junit-report@v4
+        uses: simple-elf/allure-report-action@v1.8
         with:
-          report_paths: allure-report/index.html
+          allure_results: allure-results
+          gh_pages: gh-pages
