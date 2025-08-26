@@ -11,15 +11,11 @@ on:
         type: string
         required: false
         default: 'huynhtham3008@gmail.com,huynhtham3082@gmail.com'
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    # Runs tests in parallel with matrix strategy https://docs.cypress.io/guides/guides/parallelization
-    # https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
-    # Also see warning here https://github.com/cypress-io/github-action#parallel
-    # strategy:
-    #   fail-fast: true # https://github.com/cypress-io/github-action/issues/48
-      # matrix: containers: [1, 2] # Uses 2 parallel instances
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,6 +43,9 @@ jobs:
         run: |
           allure generate allure-results --clean -o allure-report
 
+      - name: Zip Allure Report
+        run: zip -r allure-report.zip allure-report
+
       - name: Upload Allure Report artifact
         uses: actions/upload-artifact@v4
         with:
@@ -60,3 +59,24 @@ jobs:
           gh_pages: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send email with report
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Cypress Allure Report"
+          to: ${{ github.event.inputs.RECIPIENT }}
+          from: Cypress CI <${{ secrets.EMAIL_USERNAME }}>
+          secure: true
+          body: |
+            Hi team,
+
+            ✅ Cypress tests have finished running.
+            📊 The Allure Report is attached.
+
+            Regards,
+            GitHub Actions
+          attachments: allure-report.zip
