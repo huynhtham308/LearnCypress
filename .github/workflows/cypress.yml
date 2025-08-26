@@ -7,7 +7,7 @@ on:
           Email id
         type: string
         required: false
-        default: 'huynhtham3008@gmail.com'
+        default: 'huynhtham3008@gmail.com,huynhtham3082@gmail.com'
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
