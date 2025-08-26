@@ -1,5 +1,8 @@
 name: Cypress Tests
+
 on: 
+  release:
+    types: [created]
   workflow_dispatch: # Allows manual triggering of the workflow
     inputs:
       RECIPIENT:
